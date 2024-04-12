@@ -1,15 +1,23 @@
-const playBtn = document.getElementById("play")
-const pauseBtn = document.getElementById("pause")
-const duration = document.getElementById("duration");
+const durationInput = document.querySelector("#duration");
+const startButton = document.querySelector("#start");
+const pauseButton = document.querySelector("#pause");
+const circle = document.querySelector("circle");
 
-const timer = new Timer(duration, playBtn, pauseBtn, {
-    onStart() {
-        console.log("Timer Started");
-    },
-    onTick() {
-        console.log("Time Ticking");
-    },
-    onComplete() {
-        console.log("Time completed");
-    }
-})
+const perimeter = circle.getAttribute("r") * 2 * Math.PI;
+circle.setAttribute("stroke-dasharray", perimeter);
+
+let duration;
+const timer = new Timer(durationInput, startButton, pauseButton, {
+  onStart(totalDuration) {
+    duration = totalDuration;
+  },
+  onTick(timeRemaining) {
+    circle.setAttribute(
+      "stroke-dashoffset",
+      (perimeter * timeRemaining) / duration - perimeter
+    );
+  },
+  onComplete() {
+    console.log("Timer is completed");
+  },
+});

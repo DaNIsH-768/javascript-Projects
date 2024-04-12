@@ -1,44 +1,49 @@
 class Timer {
-    constructor(duration, playBtn, pauseBtn, callbacks) {
-        this.duration = duration;
-        this.playBtn = playBtn;
-        this.pauseBtn = pauseBtn;
-
-        if (callbacks) {
-            this.onStart = callbacks.onStart;
-            this.onTick = callbacks.onTick;
-            this.onComplete = callbacks.onComplete;
-        }
-
-        this.playBtn.addEventListener("click", this.play);
-        this.pauseBtn.addEventListener("click", this.pause);
+  constructor(durationInput, startButton, pauseButton, callbacks) {
+    this.durationInput = durationInput;
+    this.startButton = startButton;
+    this.pauseButton = pauseButton;
+    if (callbacks) {
+      this.onStart = callbacks.onStart;
+      this.onTick = callbacks.onTick;
+      this.onComplete = callbacks.onComplete;
     }
 
-    play = () => {
-        if (this.onStart) {
-            this.onStart();
-        }
+    this.startButton.addEventListener("click", this.start);
+    this.pauseButton.addEventListener("click", this.pause);
+  }
 
-        this.tick();
-        this.timerId = setInterval(this.tick, 1000);
+  start = () => {
+    if (this.onStart) {
+      this.onStart(this.timeRemaining);
     }
+    this.tick();
+    this.interval = setInterval(this.tick, 20);
+  };
 
-    pause = () => {
-        clearInterval(this.timerId);
+  pause = () => {
+    clearInterval(this.interval);
+  };
+
+  tick = () => {
+    if (this.timeRemaining <= 0) {
+      this.pause();
+      if (this.onComplete) {
+        this.onComplete();
+      }
+    } else {
+      this.timeRemaining = this.timeRemaining - 0.02;
+      if (this.onTick) {
+        this.onTick(this.timeRemaining);
+      }
     }
+  };
 
-    tick = () => {
-        if (this.duration.value <= 0) {
-            this.pause();
-            if (this.onComplete) {
-                this.onComplete()
-            }
+  get timeRemaining() {
+    return parseFloat(this.durationInput.value);
+  }
 
-        } else {
-            this.duration.value = parseFloat(this.duration.value) - 1;
-            if (this.onTick) {
-                this.onTick();
-            }
-        }
-    }
+  set timeRemaining(time) {
+    this.durationInput.value = time.toFixed(2);
+  }
 }
