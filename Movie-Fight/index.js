@@ -17,6 +17,17 @@ const fetchData = async (movieName) => {
   return response.data.Search;
 };
 
+const movieDetails = async (imdbID) => {
+  const response = await axios.get(URL, {
+    params: {
+      apikey: "77523091",
+      i: imdbID,
+    },
+  });
+
+  document.getElementById("summary").innerHTML = movieTemplate(response.data);
+};
+
 const root = document.querySelector(".autocomplete");
 root.innerHTML = `
 <label><b>Search for a Movie</b></label>
@@ -52,6 +63,15 @@ const onInput = async (e) => {
     <img src="${movie.Poster}" />
     <p>${movie.Title}</p>
     `;
+
+    movieTag.addEventListener("click", async () => {
+      dropdown.classList.remove("is-active");
+      inputBox.value = movie.Title;
+
+      const movieData = await movieDetails(movie.imdbID);
+      console.log(movieData);
+    });
+
     resultBox.appendChild(movieTag);
   }
 };
@@ -63,3 +83,46 @@ document.addEventListener("click", (e) => {
     dropdown.classList.remove("is-active");
   }
 });
+
+const movieTemplate = (movieData) => {
+  return `
+  <article class="media">
+    <figure class="media-left">
+      <p class="image">
+        <img src="${movieData.Poster}"/>
+      </p>
+    </figure>
+      <div class="media-content" >
+        <div class="content" >
+          <h1>${movieData.Title}</h1>
+          <h4>${movieData.Genre}</h4>
+          <p>${movieData.Plot}</p>
+        </div>
+      </div>
+  </article>
+  <article class="notification is-primary">
+    <p class="title">${movieData.Awards}</p>
+    <p class="subtitle">Awards</p>
+  </article>
+  <article class="notification is-primary">
+    <p class="title">${movieData.BoxOffice}</p>
+    <p class="subtitle">Box Office</p>
+  </article>
+  <article class="notification is-primary">
+    <p class="title">${movieData.Metascore}</p>
+    <p class="subtitle">Metascore</p>
+  </article>
+  <article class="notification is-primary">
+    <p class="title">${movieData.imdbRating}</p>
+    <p class="subtitle">IMDB Rating</p>
+  </article>
+  <article class="notification is-primary">
+    <p class="title">${movieData.Ratings[1].Value}</p>
+    <p class="subtitle">Rotten Tomatoes</p>
+  </article>
+  <article class="notification is-primary">
+    <p class="title">${movieData.imdbVotes}</p>
+    <p class="subtitle">IMDB Votes</p>
+  </article>
+  `;
+};
