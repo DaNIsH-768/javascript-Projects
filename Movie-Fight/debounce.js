@@ -8,5 +8,3 @@ const debounce = (func, delay = 1000) => {
       timeoutId = setTimeout(() => func.apply(null, args), delay);
     };
   };
-
-export default debounce;
