@@ -17,9 +17,12 @@ const fetchData = async (movieName) => {
 
 autocomplete({
   root: document.querySelector(".autocomplete"),
-});
-autocomplete({
-  root: document.querySelector(".autocomplete-two"),
+  renderOption(movie) {
+    return `
+      <img src="${movie.Poster}" />
+      <p>${movie.Title} (${movie.Year})</p>
+    `;
+  },
 });
 
 const movieDetails = async (imdbID) => {
