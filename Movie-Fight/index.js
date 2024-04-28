@@ -1,14 +1,22 @@
+// Base URL for the OMDB API
 const URL = "http://www.omdbapi.com/";
+
+// Configuration for the autocomplete function
 const AUTOCOMPLETECONFIG = {
+  // Function to render movie options in the dropdown
   renderOption(movie) {
     return `
       <img src="${movie.Poster}" />
       <p>${movie.Title} (${movie.Year})</p>
     `;
   },
+
+  // Function to set the input value when a movie is selected
   inputValue(movie) {
     return movie.Title;
   },
+
+  // Async function to fetch movie data based on the movie name
   async fetchData(movieName) {
     const response = await axios.get(URL, {
       params: {
@@ -25,6 +33,7 @@ const AUTOCOMPLETECONFIG = {
   },
 };
 
+// Autocomplete for the left dropdown
 autocomplete({
   root: document.querySelector("#left-autocomplete"),
   ...AUTOCOMPLETECONFIG,
@@ -34,6 +43,7 @@ autocomplete({
   },
 });
 
+// Autocomplete for the right dropdown
 autocomplete({
   root: document.querySelector("#right-autocomplete"),
   ...AUTOCOMPLETECONFIG,
@@ -47,9 +57,11 @@ autocomplete({
   },
 });
 
+// Variables to hold the selected movies
 let leftMovie;
 let rightMovie;
 
+// Async function to fetch and display movie details
 const movieDetails = async (imdbID, summaryElem, side) => {
   const response = await axios.get(URL, {
     params: {
@@ -71,6 +83,7 @@ const movieDetails = async (imdbID, summaryElem, side) => {
   }
 };
 
+// Function to compare the selected movies
 const compareMovies = () => {
   const leftStats = document.querySelectorAll("#left-summary .notification");
   const rightStats = document.querySelectorAll("#right-summary .notification");
@@ -91,6 +104,7 @@ const compareMovies = () => {
   });
 };
 
+// Function to generate the HTML for the movie details
 const movieTemplate = (movieData) => {
   const money = parseInt(
     movieData.BoxOffice.replace(/\$/g, "").replace(/,/g, "")
