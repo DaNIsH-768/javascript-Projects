@@ -19,8 +19,8 @@ const shuffle = (arr) => {
   return arr;
 };
 
-const cellsHorizontal = 14;
-const cellsVertical = 10;
+const cellsHorizontal = 5;
+const cellsVertical = 3;
 const WIDTH = window.innerWidth - 20;
 const HEIGHT = window.innerHeight - 20;
 const unitLengthX = WIDTH / cellsHorizontal;
