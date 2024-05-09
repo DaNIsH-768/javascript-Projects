@@ -1,5 +1,10 @@
 if (window.location.hash) {
-  console.log("hash detected");
+  document.querySelector("#msg-div").classList.add("hide");
+  document.querySelector("#show-msg").classList.remove("hide");
+
+  document.getElementById("message").innerText = atob(
+    window.location.hash.replace("#", "")
+  );
 }
 
 document.querySelector("form").addEventListener("submit", (e) => {
