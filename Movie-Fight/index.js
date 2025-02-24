@@ -1,5 +1,5 @@
 // Base URL for the OMDB API
-const URL = "http://www.omdbapi.com/";
+const URL = "https://www.omdbapi.com/";
 
 // Configuration for the autocomplete function
 const AUTOCOMPLETECONFIG = {
